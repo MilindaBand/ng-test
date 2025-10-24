@@ -1,0 +1,35 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:  # Enables manual trigger
+    inputs:
+      branch:
+        description: 'Branch to run Terraform on'
+        required: true
+        default: 'main'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}  # Checkout the selected branch
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::729874396527:role/github_oidc
+          aws-region: eu-west-2
+
+      - name: Terraform Init & Apply
+        working-directory: k8s_aws_cluster
+        run: |
+          terraform init
+          terraform apply -auto-approve
