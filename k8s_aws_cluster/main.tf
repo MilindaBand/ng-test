@@ -13,48 +13,59 @@ module "vpc" {
   enable_nat_gateway = false
 }
 
-# EKS cluster
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.0"
+  version = "~> 20.0"
 
-  cluster_name    = "demo-eks-cluster"
-  cluster_version = "1.30"
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
+
+  cluster_endpoint_public_access = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  cluster_endpoint_public_access = true
+  enable_cluster_creator_admin_permissions = true
 
-  # Disable KMS and CloudWatch log group creation
-  create_kms_key                      = false
-  create_cloudwatch_log_group         = false
-  cluster_enabled_log_types           = []
+  eks_managed_node_groups = {
+    demo = {
+      min_size     = 2
+      max_size     = 2
+      desired_size = 2
+
+      instance_types = ["t3.medium"]
+      capacity_type  = "ON_DEMAND"
+    }
+  }
+
+  tags = {
+    Environment = "demo"
+  }
 }
 
-# Create a managed node group separately
-module "eks_managed_node_group" {
-  source  = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
-  version = "20.0"
-
-  cluster_name = module.eks.cluster_name
-
-  name = "demo-nodes"
-
-  instance_types = ["t3.medium"]
-
-  desired_size = 2
-  min_size     = 2
-  max_size     = 2
-
-  subnet_ids = module.vpc.public_subnets
-}
-
-
+# outputs.tf
 output "cluster_endpoint" {
-  value = module.eks.cluster_endpoint
+  description = "EKS cluster endpoint"
+  value       = module.eks.cluster_endpoint
 }
 
-output "kubeconfig_certificate_authority_data" {
-  value = module.eks.cluster_certificate_authority_data
+output "cluster_name" {
+  description = "EKS cluster name"
+  value       = module.eks.cluster_name
+}
+
+output "cluster_certificate_authority_data" {
+  description = "Certificate authority data"
+  value       = module.eks.cluster_certificate_authority_data
+  sensitive   = true
+}
+
+output "region" {
+  description = "AWS region"
+  value       = var.region
+}
+
+output "configure_kubectl" {
+  description = "Configure kubectl command"
+  value       = "aws eks update-kubeconfig --region ${var.region} --name ${var.cluster_name}"
 }
