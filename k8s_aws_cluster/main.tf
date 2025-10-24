@@ -18,24 +18,34 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.0"
 
-  cluster_name = "demo-eks-cluster"
-  vpc_id       = module.vpc.vpc_id
-  subnets      = module.vpc.public_subnets
+  cluster_name    = "demo-eks-cluster"
+  cluster_version = "1.30"
 
-  node_groups = {
-    demo_nodes = {
-      desired_capacity = 2
-      max_capacity     = 2
-      min_capacity     = 2
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.public_subnets
 
-      instance_type = "t3.medium"
-      key_name      = "my-key"
-      subnet_ids    = module.vpc.public_subnets
-    }
-  }
-
-  manage_aws_auth = true
+  cluster_endpoint_public_access = true
 }
+
+# Create a managed node group separately
+module "eks_managed_node_group" {
+  source  = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
+  version = "20.0"
+
+  cluster_name = module.eks.cluster_name
+  cluster_arn  = module.eks.cluster_arn
+
+  name = "demo-nodes"
+
+  instance_types = ["t3.medium"]
+
+  desired_size = 2
+  min_size     = 2
+  max_size     = 2
+
+  subnet_ids = module.vpc.public_subnets
+}
+
 
 output "cluster_endpoint" {
   value = module.eks.cluster_endpoint
