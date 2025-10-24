@@ -8,7 +8,7 @@ module "vpc" {
 
   azs            = ["us-east-1a", "us-east-1b"]
   public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = []  # not needed for this demo
+  private_subnets = []
 
   enable_nat_gateway = false
 }
@@ -16,12 +16,11 @@ module "vpc" {
 # EKS cluster
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.0.1"
+  version = "20.0"
 
   cluster_name = "demo-eks-cluster"
-  version      = "1.28"           # updated attribute name
-  subnets      = module.vpc.public_subnets
   vpc_id       = module.vpc.vpc_id
+  subnets      = module.vpc.public_subnets
 
   node_groups = {
     demo_nodes = {
@@ -30,7 +29,7 @@ module "eks" {
       min_capacity     = 2
 
       instance_type = "t3.medium"
-      key_name      = "my-key"  # optional
+      key_name      = "my-key"
       subnet_ids    = module.vpc.public_subnets
     }
   }
