@@ -13,6 +13,7 @@ module "vpc" {
   enable_nat_gateway = false
 }
 
+# EKS Module
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
@@ -22,7 +23,11 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  cluster_enabled_log_types = []
+  cluster_enabled_log_types              = []
+  create_cloudwatch_log_group            = false
+  cluster_encryption_config              = {}
+  attach_cluster_encryption_policy       = false
+  create_kms_key                         = false
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
