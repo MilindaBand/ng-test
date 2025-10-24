@@ -1,12 +1,7 @@
 name: Terraform Deploy
 
 on:
-  workflow_dispatch:  # Enables manual trigger
-    inputs:
-      branch:
-        description: 'Branch to run Terraform on'
-        required: true
-        default: 'main'
+  workflow_dispatch:           # Only manual trigger
 
 permissions:
   id-token: write
