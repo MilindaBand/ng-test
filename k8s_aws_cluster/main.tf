@@ -1,16 +1,28 @@
-# VPC for EKS
+# VPC Module
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.2"
+  version = "~> 5.0"
 
-  name = "eks-demo-vpc"
-  cidr = "10.0.0.0/16"
+  name = "${var.cluster_name}-vpc"
+  cidr = local.vpc_cidr
 
-  azs            = ["eu-west-2a", "eu-west-2b"]
-  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = []
+  azs            = local.azs
+  public_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
 
-  enable_nat_gateway = false
+  enable_nat_gateway   = false
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  map_public_ip_on_launch = true
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+  }
+
+  tags = {
+    Environment = "demo"
+  }
 }
 
 # EKS Module
