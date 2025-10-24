@@ -25,6 +25,11 @@ module "eks" {
   subnet_ids = module.vpc.public_subnets
 
   cluster_endpoint_public_access = true
+
+  # Disable KMS and CloudWatch log group creation
+  create_kms_key                      = false
+  create_cloudwatch_log_group         = false
+  cluster_enabled_log_types           = []
 }
 
 # Create a managed node group separately
