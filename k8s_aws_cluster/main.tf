@@ -33,7 +33,6 @@ module "eks_managed_node_group" {
   version = "20.0"
 
   cluster_name = module.eks.cluster_name
-  cluster_arn  = module.eks.cluster_arn
 
   name = "demo-nodes"
 
