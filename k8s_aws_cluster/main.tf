@@ -1,20 +1,20 @@
 # VPC for EKS
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+    module "vpc" {
+    source  = "terraform-aws-modules/vpc/aws"
+    version = "~> 5.0"
 
-  name = "eks-demo-vpc"
-  cidr = "10.0.0.0/16"
-  map_public_ip_on_launch = true
+    name = "eks-demo-vpc"
+    cidr = "10.0.0.0/16"
+    map_public_ip_on_launch = true
 
-  azs            = ["eu-west-2a", "eu-west-2b"]
-  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = []
+    azs            = ["eu-west-2a", "eu-west-2b"]
+    public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+    private_subnets = []
 
-  enable_nat_gateway = false
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-}
+    enable_nat_gateway = false
+    enable_dns_hostnames = true
+    enable_dns_support   = true
+    }
 
 # EKS Module
 module "eks" {
@@ -54,13 +54,42 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    demo = {
-      min_size     = 2
-      max_size     = 2
-      desired_size = 2
+    demo-node-1 = {
+      min_size     = 1
+      max_size     = 1
+      desired_size = 1
 
       instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
+
+      labels = {
+        node = "node-1"
+        role = "worker"
+        "kubernetes.io/hostname" = "node-1"
+      }
+
+      tags = {
+        Name = "eks-demo-node-1"
+      }
+    }
+
+    demo-node-2 = {
+      min_size     = 1
+      max_size     = 1
+      desired_size = 1
+
+      instance_types = ["t3.medium"]
+      capacity_type  = "ON_DEMAND"
+
+      labels = {
+        node = "node-2"
+        role = "worker"
+        "kubernetes.io/hostname" = "node-2"
+      }
+
+      tags = {
+        Name = "eks-demo-node-2"
+      }
     }
   }
 
@@ -78,17 +107,6 @@ output "cluster_endpoint" {
 output "cluster_name" {
   description = "EKS cluster name"
   value       = module.eks.cluster_name
-}
-
-output "cluster_certificate_authority_data" {
-  description = "Certificate authority data"
-  value       = module.eks.cluster_certificate_authority_data
-  sensitive   = true
-}
-
-output "region" {
-  description = "AWS region"
-  value       = var.region
 }
 
 output "configure_kubectl" {
