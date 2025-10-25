@@ -54,7 +54,7 @@ jobs:
           MARIADB_USER: ${{ secrets.MARIADB_USER }}
           MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}
         run: |
-          helm upgrade --install mariadb ./mariadb -f mariadb-values.yaml \
+          helm upgrade --install mariadb ./mariadb -f mariadb_values.yaml \
             --namespace demo \
             --create-namespace \
             --set auth.rootPassword="$MARIADB_ROOT_PASSWORD" \
