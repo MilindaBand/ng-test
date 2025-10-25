@@ -55,7 +55,7 @@ module "eks" {
   cluster_addons = {
     aws-ebs-csi-driver = {
       most_recent              = true
-      service_account_role_arn = "arn:aws:iam::729874396527:role/AmazonEKS_EBS_CSI_DriverRole"
+      service_account_role_arn = "arn:aws:iam::729874396527:role/github_oidc"
     }
   }
   eks_managed_node_groups = {
