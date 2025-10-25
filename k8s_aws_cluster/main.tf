@@ -52,12 +52,12 @@ module "eks" {
       }
     }
   }
-  cluster_addons = {
-    aws-ebs-csi-driver = {
-      most_recent              = true
-      service_account_role_arn = "arn:aws:iam::729874396527:role/github_oidc"
-    }
-  }
+#   cluster_addons = {
+#     aws-ebs-csi-driver = {
+#       most_recent              = true
+#       service_account_role_arn = "arn:aws:iam::729874396527:role/github_oidc"
+#     }
+#   }
   eks_managed_node_groups = {
     demo-node-1 = {
       min_size     = 1
