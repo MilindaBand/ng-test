@@ -39,6 +39,12 @@ jobs:
         with:
           version: v3.14.4  # or latest stable
 
+      - name: Configure kubectl for EKS
+        run: |
+          aws eks update-kubeconfig \
+            --region eu-west-2 \
+            --name $(terraform -chdir=k8s_aws_cluster output -raw cluster_name)
+
       - name: Deploy MariaDB via Helm
         working-directory: deployments/database
         env:
