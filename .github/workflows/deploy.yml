@@ -43,7 +43,7 @@ jobs:
         run: |
           aws eks update-kubeconfig \
             --region eu-west-2 \
-            --name $(terraform -chdir=k8s_aws_cluster output -raw cluster_name)
+            --name demo-eks-cluster
 
       - name: Deploy MariaDB via Helm
         working-directory: deployments/database
