@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "eks:CreateAddon",
+        "eks:UpdateAddon",
+        "eks:DescribeAddon",
+        "eks:DeleteAddon",
+        "eks:ListAddons",
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:DeleteRole",
+        "iam:TagRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

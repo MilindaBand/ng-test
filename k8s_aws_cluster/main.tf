@@ -72,6 +72,14 @@ module "eks" {
       }
     }
 
+    cluster_addons = {
+        aws-ebs-csi-driver = {
+        most_recent              = true
+        service_account_role_arn = "arn:aws:iam::729874396527:role/AmazonEKS_EBS_CSI_DriverRole"
+        }
+    }
+
+
     demo-node-2 = {
       min_size     = 1
       max_size     = 1
