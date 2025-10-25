@@ -65,7 +65,6 @@ module "eks" {
       labels = {
         node = "node-1"
         role = "worker"
-        "kubernetes.io/hostname" = "node-1"
       }
 
       tags = {
@@ -84,7 +83,6 @@ module "eks" {
       labels = {
         node = "node-2"
         role = "worker"
-        "kubernetes.io/hostname" = "node-2"
       }
 
       tags = {

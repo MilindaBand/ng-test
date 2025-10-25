@@ -25,10 +25,10 @@ secondary:
 # Optional: Pin primary/replica to specific nodes
 primary:
   nodeSelector:
-    kubernetes.io/hostname: node-1
+    node: "node-1"
 secondary:
   nodeSelector:
-    kubernetes.io/hostname: node-2
+    node: "node-2"
 
 # Networking & security
 networkPolicy:
