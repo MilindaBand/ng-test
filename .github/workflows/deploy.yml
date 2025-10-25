@@ -46,7 +46,7 @@ jobs:
             --name demo-eks-cluster
 
       - name: Deploy MariaDB via Helm
-        working-directory: deployments/database/mariadb
+        working-directory: deployments/database
         env:
           MARIADB_ROOT_PASSWORD: ${{ secrets.MARIADB_ROOT_PASSWORD }}
           MARIADB_REPLICATION_PASSWORD: ${{ secrets.MARIADB_REPLICATION_PASSWORD }}
