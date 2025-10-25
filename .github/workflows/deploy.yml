@@ -33,3 +33,26 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.4  # or latest stable
+
+      - name: Deploy MariaDB via Helm
+        working-directory: deployments/database
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MARIADB_ROOT_PASSWORD }}
+          MARIADB_REPLICATION_PASSWORD: ${{ secrets.MARIADB_REPLICATION_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.MARIADB_DATABASE }}
+          MARIADB_USER: ${{ secrets.MARIADB_USER }}
+          MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}
+        run: |
+          helm upgrade --install mariadb ./mariadb -f mariadb-values.yaml \
+            --namespace demo \
+            --create-namespace \
+            --set auth.rootPassword="$MARIADB_ROOT_PASSWORD" \
+            --set auth.replicationPassword="$MARIADB_REPLICATION_PASSWORD" \
+            --set auth.database="$MARIADB_DATABASE" \
+            --set auth.username="$MARIADB_USER" \
+            --set auth.password="$MARIADB_PASSWORD"
