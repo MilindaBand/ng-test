@@ -43,8 +43,8 @@ jobs:
 
       - name: Tag Docker image for ECR
         run: |
-          docker tag $ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          docker tag $ECR_REPOSITORY:latest 729874396527.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
       - name: Push Docker image to ECR
         run: |
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          docker push $729874396527.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
