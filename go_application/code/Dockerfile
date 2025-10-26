@@ -1,26 +1,35 @@
-# Use official Golang image for building
-FROM golang:1.21 as builder
+# ---------- Build Stage ----------
+FROM golang:1.23 AS builder
 
 WORKDIR /app
 
-# Copy go.mod and go.sum first for caching dependencies
-COPY go.mod go.sum ./
-RUN go mod download
+# Copy go.mod and go.sum first for caching
+COPY go.mod ./
+COPY go.sum* . || true
 
-# Copy source code
+# Download dependencies
+RUN go mod tidy && go mod download
+
+# Copy the rest of the code (Dockerfile is in same folder)
 COPY . .
 
 # Build the binary
 RUN CGO_ENABLED=0 GOOS=linux go build -o pod-monitor main.go
 
-# Use minimal image for runtime
-FROM alpine:latest
+# ---------- Runtime Stage ----------
+FROM alpine:3.20
 
-WORKDIR /root/
+# Install certificates for HTTPS calls
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root
+
+# Copy binary from builder
 COPY --from=builder /app/pod-monitor .
 
-# Use non-root user (optional but best practice)
-USER 1000
+# Create non-root user
+RUN adduser -D appuser
+USER appuser
 
 # Run the binary
-CMD ["./pod-monitor"]
+ENTRYPOINT ["./pod-monitor"]
