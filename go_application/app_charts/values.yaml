@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: pod-monitor
+  repository: 729874396527.dkr.ecr.us-east-1.amazonaws.com/pod-monitor
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -16,5 +16,7 @@ resources:
 serviceAccount:
   create: true
   name: pod-monitor-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::729874396527:role/pod-monitor-ecr-role
 
 namespace: default
