@@ -21,7 +21,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::729874396527:role/github_oidc
-          aws-region: eu-west-2
+          aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -42,7 +42,7 @@ jobs:
       - name: Configure kubectl for EKS
         run: |
           aws eks update-kubeconfig \
-            --region eu-west-2 \
+            --region us-east-1 \
             --name demo-eks-cluster
 
       - name: Deploy MariaDB via Helm

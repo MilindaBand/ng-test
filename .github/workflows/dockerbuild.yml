@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: eu-west-2       # Change to your region
+      AWS_REGION: us-east-1       # Change to your region
       ECR_REPOSITORY: pod-monitor # Change to your ECR repo name
       IMAGE_TAG: latest
 
