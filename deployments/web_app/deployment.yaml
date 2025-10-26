@@ -26,6 +26,11 @@ spec:
             host_suffix=${pod_name: -5}
             sed -i "s/Host-XXXXX/Host-${host_suffix}/g" /workdir/index.html
             sed -i "s/\$POD_IP/${POD_IP}/g" /workdir/index.html
+        env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
         volumeMounts:
         - name: html
           mountPath: /workdir
