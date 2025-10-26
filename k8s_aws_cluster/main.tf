@@ -102,13 +102,13 @@ module "eks" {
   }
 }
 
-resource "aws_eks_addon" "aws_ebs_csi_driver" {
-  cluster_name           = module.eks.cluster_name
-  addon_name             = "aws-ebs-csi-driver"
-  service_account_role_arn = "arn:aws:iam::729874396527:role/AmazonEKS_EBS_CSI_DriverRole"
-  resolve_conflicts_on_create = "OVERWRITE"
-  depends_on             = [module.eks.eks_managed_node_groups]
-}
+# resource "aws_eks_addon" "aws_ebs_csi_driver" {
+#   cluster_name           = module.eks.cluster_name
+#   addon_name             = "aws-ebs-csi-driver"
+#   service_account_role_arn = "arn:aws:iam::729874396527:role/AmazonEKS_EBS_CSI_DriverRole"
+#   resolve_conflicts_on_create = "OVERWRITE"
+#   depends_on             = [module.eks.eks_managed_node_groups]
+# }
 
 
 # outputs.tf
