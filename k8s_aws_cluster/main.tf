@@ -61,9 +61,9 @@ module "eks" {
 #   }
   eks_managed_node_groups = {
     demo-node-1 = {
-      min_size     = 1
-      max_size     = 1
-      desired_size = 1
+      min_size     = 0
+      max_size     = 0
+      desired_size = 0
 
       instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
@@ -79,9 +79,9 @@ module "eks" {
     }
 
     demo-node-2 = {
-      min_size     = 1
-      max_size     = 1
-      desired_size = 1
+      min_size     = 0
+      max_size     = 0
+      desired_size = 0
 
       instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
