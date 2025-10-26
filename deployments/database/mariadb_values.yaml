@@ -61,5 +61,4 @@ service:
 
 ## Network Policy
 networkPolicy:
-  enabled: true
-  allowExternal: false
+  enabled: false
