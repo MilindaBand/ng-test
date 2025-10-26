@@ -4,8 +4,8 @@ FROM golang:1.23 AS builder
 WORKDIR /app
 
 # Copy go.mod and go.sum first for caching
-COPY go.mod ./
-COPY go.sum* . || true
+COPY go.mod go.sum ./
+
 
 # Download dependencies
 RUN go mod tidy && go mod download
