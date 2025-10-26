@@ -15,7 +15,7 @@ primary:
   
   persistence:
     enabled: true
-    storageClass: "gp3"
+    storageClass: "gp2"
     size: 1Gi
     accessModes:
       - ReadWriteOnce
@@ -37,7 +37,7 @@ secondary:
   
   persistence:
     enabled: true
-    storageClass: "gp3"
+    storageClass: "gp2"
     size: 1Gi
     accessModes:
       - ReadWriteOnce
