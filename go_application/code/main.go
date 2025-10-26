@@ -8,7 +8,7 @@ import (
     "syscall"
 
     corev1 "k8s.io/api/core/v1"
-    metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+    "k8s.io/apimachinery/pkg/fields"
     "k8s.io/client-go/kubernetes"
     "k8s.io/client-go/rest"
     "k8s.io/client-go/tools/cache"
@@ -26,11 +26,12 @@ func main() {
         log.Fatalf("Failed to create Kubernetes client: %v", err)
     }
 
+    // Watch all pods across all namespaces
     lw := cache.NewListWatchFromClient(
         clientset.CoreV1().RESTClient(),
         "pods",
         metav1.NamespaceAll,
-        metav1.ListOptions{},
+        fields.Everything(), // <-- Fixed here
     )
 
     _, controller := cache.NewInformer(
