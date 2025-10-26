@@ -13,6 +13,7 @@ jobs:
       AWS_REGION: us-east-1       # Change to your region
       ECR_REPOSITORY: pod-monitor # Change to your ECR repo name
       IMAGE_TAG: latest
+      AWS_ACCOUNT_ID: 729874396527 # Your AWS account ID
 
     permissions:
       id-token: write
@@ -43,8 +44,8 @@ jobs:
 
       - name: Tag Docker image for ECR
         run: |
-          docker tag $ECR_REPOSITORY:latest 729874396527.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          docker tag $ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
       - name: Push Docker image to ECR
         run: |
-          docker push $729874396527.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
