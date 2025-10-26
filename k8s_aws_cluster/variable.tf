@@ -1,6 +1,6 @@
 variable "region" {
   description = "AWS region"
-  default     = "eu-west-2"
+  default     = "us-east-1"
 }
 
 variable "cluster_name" {
@@ -10,7 +10,7 @@ variable "cluster_name" {
 
 variable "cluster_version" {
   description = "Kubernetes version"
-  default     = "1.31"
+  default     = "1.34"
 }
 
 variable "additional_iam_users" {
