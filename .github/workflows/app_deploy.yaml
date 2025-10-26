@@ -1,0 +1,73 @@
+name: Helm & Kubernetes Deploy
+
+on:
+  workflow_dispatch:           # Manual trigger only
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}  # Checkout the selected branch
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.4 
+
+      - name: Configure kubectl for EKS
+        run: |
+          aws eks update-kubeconfig \
+            --region us-east-1 \
+            --name demo-eks-cluster
+
+
+      # Deploy MariaDB via Helm
+      - name: Deploy MariaDB via Helm
+        working-directory: deployments/database
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MARIADB_ROOT_PASSWORD }}
+          MARIADB_REPLICATION_PASSWORD: ${{ secrets.MARIADB_REPLICATION_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.MARIADB_DATABASE }}
+          MARIADB_USER: ${{ secrets.MARIADB_USER }}
+          MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}
+        run: |
+          helm upgrade --install mariadb ./mariadb -f mariadb_values.yaml \
+            --namespace demo \
+            --create-namespace \
+            --set auth.rootPassword="$MARIADB_ROOT_PASSWORD" \
+            --set auth.replicationPassword="$MARIADB_REPLICATION_PASSWORD" \
+            --set auth.database="$MARIADB_DATABASE" \
+            --set auth.username="$MARIADB_USER" \
+            --set auth.password="$MARIADB_PASSWORD"
+
+
+      # Apply Web App Manifests
+      - name: Apply Web App Manifests
+        working-directory: deployments/web_app
+        run: |
+          kubectl apply -f configmap.yaml
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+
+
+      # Apply MariaDB Network Policy
+      - name: Apply MariaDB Network Policy
+        working-directory: deployments/network
+        run: |
+          kubectl apply -f mariadb-networkpolicy.yaml
+
+
+      # Deploy Go Application via Helm
+      - name: Deploy Go Application via Helm
+        working-directory: go_application/app_charts
+        run: |
+          helm upgrade --install go-application . -f values.yaml \
+            --namespace demo \
+            --create-namespace
