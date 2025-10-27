@@ -1,8 +1,8 @@
 # Main test --> question 6
 
-We can use Multus CNI to allow pods to connect to a secondary network interface without requiring a load balancer
+Multus CNI can be used to allow pods to connect to a secondary network interface without requiring a load balancer.
 
-## We can use below steps to implement and attach to pods as secondary CNI
+## The following steps can be used to implement and attach a secondary CNI to pods.
 
 
 1. Install Multus deamonset
