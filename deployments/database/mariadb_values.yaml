@@ -2,11 +2,11 @@
 architecture: replication
 
 auth:
-  rootPassword: "replace"
-  replicationPassword: "replace"
-  database: "mydatabase"
-  username: "myuser"
-  password: "mypassword"
+  rootPassword: "replaced"
+  replicationPassword: "replaced"
+  database: "replaced"
+  username: "replaced"
+  password: "replaced"
 
 primary:
   ## Master pod configuration
