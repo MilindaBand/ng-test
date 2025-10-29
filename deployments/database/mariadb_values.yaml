@@ -2,8 +2,8 @@
 architecture: replication
 
 auth:
-  rootPassword: "20006mita"
-  replicationPassword: "2006mita"
+  rootPassword: "replace"
+  replicationPassword: "replace"
   database: "mydatabase"
   username: "myuser"
   password: "mypassword"
