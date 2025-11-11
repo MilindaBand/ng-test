@@ -13,6 +13,9 @@ kubectl -n demo exec -it test -- sh -c "nc -vz mariadb-primary 3306"
 kubectl get networkpolicies -n demo
 
 
+## List Node Labels
+kubectl get node ip-10-0-1-174.ec2.internal -o json | jq '.metadata.labels'
+
 # I have to install calico plugin for additionally 
 helm repo add projectcalico https://projectcalico.docs.tigera.io/charts
 helm repo update
