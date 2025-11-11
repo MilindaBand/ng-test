@@ -103,16 +103,6 @@ resource "aws_eks_addon" "aws_ebs_csi_driver" {
   depends_on             = [module.eks.eks_managed_node_groups]
 }
 
-# Calico Network Policy Add-on
-resource "aws_eks_addon" "calico" {
-  cluster_name                = module.eks.cluster_name
-  addon_name                  = "aws-calico"
-  resolve_conflicts_on_create = "OVERWRITE"
-  resolve_conflicts_on_update = "OVERWRITE"
-
-  depends_on = [module.eks]
-}
-
 # outputs.tf
 output "cluster_endpoint" {
   description = "EKS cluster endpoint"
