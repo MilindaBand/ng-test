@@ -79,5 +79,4 @@ jobs:
       - name: Deploy Go Application via Helm
         working-directory: go_application/app_charts
         run: |
-          helm upgrade --install monitoring-app . -f values.yaml \
-            --namespace demo
+          helm upgrade --install monitoring-app . -f values.yaml
