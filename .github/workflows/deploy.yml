@@ -32,4 +32,4 @@ jobs:
         working-directory: k8s_aws_cluster
         run: |
           terraform init
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
